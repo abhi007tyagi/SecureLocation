@@ -92,7 +92,7 @@ public class ScanService extends Service {
                         exitedRegion();
                     }
                 }
-                Log.d(TAG, "SB-->" + sb.toString());
+                Log.d(TAG, "MAC-->" + sb.toString());
                 Log.d(TAG, "TotalFound-->" + totalFound);
                 Log.d(TAG, "Beacon-->" + beaconFound);
                 Log.d(TAG, "*****************************************************");
@@ -202,7 +202,7 @@ public class ScanService extends Service {
         @Override
         public void run() {
             // run on another thread
-            Log.d(TAG, "run called...##################################################");
+            Log.d(TAG, "##################################################");
             scanLeDevice();
         }
     }
