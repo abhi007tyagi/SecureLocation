@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SecureLocation</string>
+
+    <string name="uuid">UUID</string>
+    <string name="scan_time">Scan Time</string>
+    <string name="scan_interval">Scan Interval</string>
+    <string name="sec">sec</string>
+    <string name="min">min</string>
+    <string name="start_service">Start Service</string>
+    <string name="stop_service">Stop Service</string>
+    <string name="ble_not_supported">BLE NOT SUPPORTED</string>
+    <string name="admin_receiver_status_enabled">Admin Enabled</string>
+    <string name="admin_receiver_status_disabled">Admin Disabled</string>
+    <string name="default_uuid">43A2BC29C1114A768B6F78AECB142E5A</string>
+    <string name="beacon_code">"1BFF4C00BEAC"</string>
+    <string name="enter_secure_region">Entered Secure Region</string>
+    <string name="exit_secure_region">Exited Secure Region</string>
+    <string name="camera_disabled">Camera Disabled</string>
+    <string name="camera_enabled">Camera Enabled</string>
+
+</resources>
