@@ -17,5 +17,8 @@
     <string name="exit_secure_region">Exited Secure Region</string>
     <string name="camera_disabled">Camera Disabled</string>
     <string name="camera_enabled">Camera Enabled</string>
+    <string name="title_activity_exception">ExceptionActivity</string>
+
+    <string name="exception_message">Unknown error occurred.\nPlease try again later!</string>
 
 </resources>

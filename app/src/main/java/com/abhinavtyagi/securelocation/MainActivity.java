@@ -84,6 +84,7 @@ public class MainActivity extends Activity {
      * Populate UI and set listeners
      */
     private void doTask() {
+
         uuid = (EditText) findViewById(R.id.uuid);
         scanTime = (EditText) findViewById(R.id.scanTime);
         scanInterval = (EditText) findViewById(R.id.scanInterval);
