@@ -104,6 +104,15 @@
     </LinearLayout>
 
     <Switch
+        android:id="@+id/beaconType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="21dp"
+        android:text="@string/start_service" />
+
+
+    <Switch
         android:id="@+id/service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     private static final int BL = 2005;
 
     EditText uuid, scanTime, scanInterval;
-    Switch serviceSwitch;
+    Switch beaconType, serviceSwitch;
 
 
     @Override
@@ -88,9 +88,10 @@ public class MainActivity extends Activity {
         uuid = (EditText) findViewById(R.id.uuid);
         scanTime = (EditText) findViewById(R.id.scanTime);
         scanInterval = (EditText) findViewById(R.id.scanInterval);
+        beaconType = (Switch) findViewById(R.id.beaconType);
         serviceSwitch = (Switch) findViewById(R.id.service);
 
-        setServiceSwitchUI();
+        resetUI();
 
         scanTime.addTextChangedListener(new TextWatcher() {
             @Override
@@ -130,6 +131,22 @@ public class MainActivity extends Activity {
             }
         });
 
+        beaconType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    beaconType.setText(getResources().getText(R.string.i_beacon));
+                    PreferenceHelper.setBeaconType(PreferenceHelper.I_BEACON);
+                    Log.d(TAG, "iBeacon selected");
+                } else {
+                    beaconType.setText(getResources().getText(R.string.alt_beacon));
+                    PreferenceHelper.setBeaconType(PreferenceHelper.ALT_BEACON);
+                    Log.d(TAG, "AltBeacon selected");
+                }
+            }
+        });
+
         serviceSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -158,6 +175,7 @@ public class MainActivity extends Activity {
 
     /**
      * Check if entered fields are valid or not
+     *
      * @return
      */
     private boolean isDataValid() {
@@ -191,9 +209,20 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * Check and update Service Switch UI
+     * Check and update Beacon Type UI and Service Switch UI
      */
-    private void setServiceSwitchUI() {
+    private void resetUI() {
+        switch (PreferenceHelper.getBeaconType()) {
+            case PreferenceHelper.I_BEACON:
+                beaconType.setText(getResources().getText(R.string.i_beacon));
+                beaconType.setChecked(true);
+                break;
+            case PreferenceHelper.ALT_BEACON:
+            default:
+                beaconType.setText(getResources().getText(R.string.alt_beacon));
+                beaconType.setChecked(false);
+                break;
+        }
 
         if (PreferenceHelper.isServiceRunning()) {
             serviceSwitch.setChecked(true);
@@ -206,10 +235,11 @@ public class MainActivity extends Activity {
 
     /**
      * Show alert message based on requestCode
+     *
      * @param requestCode
      */
-    private void showMessage(int requestCode){
-        if(requestCode == ADMIN){
+    private void showMessage(int requestCode) {
+        if (requestCode == ADMIN) {
             new AlertDialog.Builder(this)
                     .setMessage("Please select \"Activate\" to proceed!")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -227,8 +257,7 @@ public class MainActivity extends Activity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        }
-        else if(requestCode == BL) {
+        } else if (requestCode == BL) {
             new AlertDialog.Builder(this)
                     .setMessage("Please enable Bluetooth to proceed!")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

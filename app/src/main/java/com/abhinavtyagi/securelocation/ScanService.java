@@ -21,21 +21,67 @@ import java.util.TimerTask;
  */
 public class ScanService extends Service {
 
+    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private static final String TAG = "Scan Service";
-
+    StringBuffer sb = new StringBuffer();
     private String UUID;
     private long SCAN_TIME;
     private long SCAN_INTERVAL;
-
     private int totalFound = 0;
     private int beaconFound = 0;
-
     private Handler handler = new Handler();
     private Timer timer = null;
     private BluetoothAdapter mBluetoothAdapter;
     //    private boolean mScanning;
     private Handler mHandler = new Handler();
-    StringBuffer sb = new StringBuffer();
+    // Device scan callback.
+    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+        @Override
+        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+
+//            Log.d("IN",""+sharedpreferences.getBoolean(IN_REGION,false));
+//            Log.d("OUT",""+sharedpreferences.getBoolean(OUT_REGION,false));
+
+            String macAdd = device.getAddress();
+            if (sb.toString().contains(macAdd)) {
+                // skip device
+            } else {
+                // add new found device
+                sb.append(macAdd + ";;");
+                totalFound++;
+
+                String beaconCode = getString(R.string.altbeacon_code); //default code to match
+                switch (PreferenceHelper.getBeaconType()) {
+                    case PreferenceHelper.I_BEACON:
+                        beaconCode = getString(R.string.ibeacon_code);
+                        break;
+                    case PreferenceHelper.ALT_BEACON:
+                    default:
+                        beaconCode = getString(R.string.altbeacon_code);
+                        break;
+                }
+
+                String hexData = bytesToHex(scanRecord);
+
+                if (hexData.contains(UUID) && hexData.toUpperCase().startsWith(beaconCode)) {
+                    beaconFound++;
+                    if (!PreferenceHelper.isInsideSecureLocation()) {
+                        enteredRegion();
+                    }
+                }
+            }
+        }
+    };
+
+    private static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -106,34 +152,6 @@ public class ScanService extends Service {
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
 
-    // Device scan callback.
-    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-
-//            Log.d("IN",""+sharedpreferences.getBoolean(IN_REGION,false));
-//            Log.d("OUT",""+sharedpreferences.getBoolean(OUT_REGION,false));
-
-            String macAdd = device.getAddress();
-            if (sb.toString().contains(macAdd)) {
-                // skip device
-            } else {
-                // add new found device
-                sb.append(macAdd + ";;");
-                totalFound++;
-
-                String hexData = bytesToHex(scanRecord);
-                if (hexData.contains(UUID) && hexData.toUpperCase().startsWith(getResources().getString(R.string.beacon_code))) {
-                    beaconFound++;
-                    if (!PreferenceHelper.isInsideSecureLocation()) {
-                        enteredRegion();
-                    }
-                }
-            }
-        }
-    };
-
-
     private void enteredRegion() {
         // Inside Region
         if (((SecureLocation) getApplication()).devicePolicyManager.isAdminActive(((SecureLocation) getApplication()).deviceAdmin)) {
@@ -180,19 +198,6 @@ public class ScanService extends Service {
 
         notificationManager.notify(0, notify);
     }
-
-    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    private static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
-
 
     /**
      * Timer Task class
