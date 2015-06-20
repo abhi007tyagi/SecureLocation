@@ -41,7 +41,6 @@
 
         <activity
             android:name=".ExceptionActivity"
-            android:label="@string/title_activity_exception"
             android:screenOrientation="portrait"></activity>
     </application>
 
