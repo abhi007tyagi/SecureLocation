@@ -1,5 +1,15 @@
 # SecureLocation
-This application demonstrate, how a location can be identified using BLE based beacons and implement organization policies on the device to make it secure. In this demo, if a user enters a secured location (beacon is detected), then camera of the device is disabled. Once the user exits the secure location, camera is enabled automatically. This use case can be enhanced to automatically activate different policies and settings on devices when in specific location. This use case can also be used for other purposes like indoor beacon based navigation, announcements, advertisments, etc.  
+This application demonstrate, how a location can be identified using BLE based beacons and implement organization policies on the device to make it secure. In this demo, if a user enters a secured location (beacon is detected), then camera of the device is disabled. Once the user exits the secure location, camera is enabled automatically. This use case can be enhanced to automatically activate different policies and settings on devices when in specific location. This use case can also be used for other purposes like indoor beacon based navigation, announcements, advertisments, etc.
+
+<br>All rights reserved. No part of this project may be reproduced, distributed,copied,transmitted or
+        transformed in any form or by any means, without the prior written permission of the developer.
+        For permission requests,write to the developer,addressed “Attention:Permissions Coordinator,”
+        at the address below.
+
+        Abhinav Tyagi
+        DGIII-44Vikas Puri,
+        New Delhi-110018
+        abhi007tyagi@gmail.com
 
 <br> <br><b>Prepare beacon</b>
 
